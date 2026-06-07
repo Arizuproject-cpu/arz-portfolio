@@ -60,3 +60,9 @@ Claude should determine:
 Do not generate code immediately.
 
 Analyze and propose the best implementation approach first.
+
+File writing rule:
+
+Do not use Edit/Write tool for large file rewrites.
+
+Use Python file operations when modifying project files to avoid NTFS cache truncation issues observed in this repository.
