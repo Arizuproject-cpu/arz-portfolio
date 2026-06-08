@@ -6,6 +6,9 @@
  *
  * SSR-safe — all browser API access is inside useEffect / useSyncExternalStore.
  * Phase 3B adds canvas draw calls; this hook only manages asset loading.
+ *
+ * Phase 4B: isFullyLoaded now treats settled frames (loaded OR error) as done
+ * so a partial load failure does not leave the progress bar visible forever.
  */
 
 import { useState, useEffect, useSyncExternalStore } from "react"
@@ -45,7 +48,10 @@ export interface UseImageSequenceResult {
   totalCount: number
   /** Integer 0–100 load progress. */
   loadProgress: number
-  /** True when every frame has status "loaded". */
+  /**
+   * True when every frame has settled (loaded or error).
+   * Phase 4B: partial errors no longer keep this false indefinitely.
+   */
   isFullyLoaded: boolean
   /** True when at least one frame has status "error". */
   hasError: boolean
@@ -138,9 +144,14 @@ export function useImageSequence(
   }, [config])
 
   // ── Derived values ────────────────────────────────────────────────────────
-  const loadedCount   = frames.filter((f) => f.status === "loaded").length
-  const hasError      = frames.some((f) => f.status === "error")
-  const isFullyLoaded = loadedCount === config.frames.length && !hasError
+  const loadedCount = frames.filter((f) => f.status === "loaded").length
+  const errorCount  = frames.filter((f) => f.status === "error").length
+  const hasError    = errorCount > 0
+
+  // Phase 4B: a frame that fails to load is still "settled" — don't block
+  // isFullyLoaded (and the progress bar) on permanent load errors.
+  const isFullyLoaded = (loadedCount + errorCount) >= config.frames.length
+
   const loadProgress  = calcLoadProgress(frames)
 
   const firstIdx    = config.frames.indexOf(config.firstFrame)

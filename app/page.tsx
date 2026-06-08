@@ -1,22 +1,30 @@
 import Hero from "@/components/hero/Hero"
+import Architecture from "@/components/sections/Architecture"
+import Projects from "@/components/sections/Projects"
+import TechStack from "@/components/sections/TechStack"
+import Contact from "@/components/sections/Contact"
+import Footer from "@/components/sections/Footer"
 
 /**
  * Home — page composition
  *
  * Section order (follows DESIGN.md narrative arc):
- *   Hero -> About -> Architecture -> Projects -> TechStack
+ *   Hero -> Architecture -> Projects -> TechStack -> Contact -> Footer
  *
- * Phase 2: Hero scaffold done
- * Phase 5: Content sections
+ * Direction C: sections below hero are wrapped in a positioned container
+ * with z-index: 1 so they render above the hero sticky element.
  */
 export default function Home() {
   return (
     <main>
       <Hero />
-      {/* Phase 5: About */}
-      {/* Phase 5: Architecture */}
-      {/* Phase 5: Projects */}
-      {/* Phase 5: TechStack */}
+      <div style={{ position: "relative", zIndex: 1 }}>
+        <Architecture />
+        <Projects />
+        <TechStack />
+        <Contact />
+        <Footer />
+      </div>
     </main>
   )
 }

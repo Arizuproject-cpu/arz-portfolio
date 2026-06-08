@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 import Lenis from "lenis"
-import { gsap } from "@/lib/gsap"
+import { gsap, ScrollTrigger } from "@/lib/gsap"
 
 /**
  * Providers — client-side shell that boots Lenis smooth scroll
@@ -17,6 +17,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
       smoothWheel: true,
       autoRaf: false,      // GSAP owns the RAF loop
     })
+
+    // Wire Lenis scroll events into ScrollTrigger so it reads
+    // Lenis's virtual position instead of native scrollY.
+    // Without this, ScrollTrigger never fires onUpdate.
+    lenis.on("scroll", () => ScrollTrigger.update())
 
     // Feed Lenis into GSAP's RAF — ScrollTrigger reads from here
     const rafCallback = (time: number) => {

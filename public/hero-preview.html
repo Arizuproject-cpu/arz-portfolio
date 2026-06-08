@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arizu — Hero Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #F7F7F2;
+      --text:   #111111;
+      --muted:  #666666;
+      --dim:    #999999;
+      --accent: #C8FF00;
+      --cyan:   #00D9FF;
+      --card:   #FFFFFF;
+      --border: #111111;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      /* subtle dot grid */
+      background-image: radial-gradient(circle, rgba(0,0,0,0.07) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 56px; height: 60px;
+      background: rgba(247,247,242,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 2px solid rgba(17,17,17,0.15);
+    }
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800; font-size: 18px; letter-spacing: -0.5px;
+    }
+    .nav-logo em {
+      background: var(--accent); font-style: normal;
+      padding: 1px 5px; border: 2px solid #111; margin-left: 1px;
+    }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-links a {
+      font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600;
+      color: var(--muted); text-decoration: none; transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-badge {
+      font-family: 'JetBrains Mono', monospace; font-size: 10px;
+      background: var(--cyan); border: 2px solid #111;
+      padding: 3px 10px; letter-spacing: .06em;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 460px;
+      align-items: center;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 100px 56px 80px;
+      gap: 0;
+      position: relative;
+    }
+
+    /* ─── LEFT TEXT ─── */
+    .hero-left { position: relative; z-index: 2; }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-bottom: 32px;
+    }
+    .eyebrow-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent); border: 2px solid #111;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(200,255,0,0.5); }
+      50% { box-shadow: 0 0 0 6px rgba(200,255,0,0); }
+    }
+    .eyebrow-text {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      letter-spacing: .1em; color: var(--muted); text-transform: uppercase;
+    }
+
+    .hero-h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: clamp(58px, 6.5vw, 108px);
+      line-height: 0.90;
+      letter-spacing: -3px;
+      margin-bottom: 32px;
+    }
+    .hero-h1 .line-hey { color: var(--muted); font-weight: 300; }
+    .hero-h1 .line-name {
+      display: inline-block;
+      background: var(--text); color: var(--accent);
+      padding: 0 12px 6px;
+    }
+
+    .hero-desc {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(16px, 1.8vw, 21px);
+      font-weight: 400; line-height: 1.6;
+      color: var(--muted); max-width: 440px;
+      margin-bottom: 48px;
+    }
+    .hero-desc strong { color: var(--text); font-weight: 600; }
+
+    .ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 48px; }
+
+    .cta-main {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 15px;
+      padding: 14px 30px; background: var(--text); color: var(--bg);
+      border: 3px solid var(--border); box-shadow: 6px 6px 0 #111;
+      text-decoration: none; transition: transform .12s, box-shadow .12s;
+    }
+    .cta-main:hover { transform: translate(-3px,-3px); box-shadow: 9px 9px 0 #111; }
+
+    .cta-ghost {
+      display: inline-flex; align-items: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600; font-size: 15px;
+      padding: 14px 30px; background: transparent; color: var(--text);
+      border: 3px solid var(--border); box-shadow: 6px 6px 0 #111;
+      text-decoration: none; transition: transform .12s, box-shadow .12s;
+    }
+    .cta-ghost:hover { transform: translate(-3px,-3px); box-shadow: 9px 9px 0 #111; }
+
+    /* tags */
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      padding: 5px 12px; border: 1.5px solid rgba(17,17,17,0.25);
+      color: var(--dim); background: rgba(255,255,255,0.5);
+      letter-spacing: .04em;
+    }
+
+    /* decorative line */
+    .deco-line {
+      position: absolute; left: -56px; top: 50%;
+      width: 4px; height: 160px; background: var(--accent);
+      border: 2px solid #111; transform: translateY(-50%);
+    }
+
+    /* ─── RIGHT: PORTRAIT ─── */
+    .hero-right {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Floating card that "hosts" the portrait — no hard box */
+    .portrait-host {
+      position: relative;
+      width: 100%;
+    }
+
+    /* Ambient glow behind portrait */
+    .portrait-glow {
+      position: absolute;
+      inset: 10% 10% 20%;
+      background: radial-gradient(ellipse at 50% 30%, rgba(200,255,0,0.18), transparent 65%);
+      filter: blur(32px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    #heroCanvas {
+      display: block;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+      /* Gradient mask: full at top, fades on sides, strong fade at bottom */
+      -webkit-mask-image:
+        linear-gradient(to bottom,
+          transparent  0%,
+          black        9%,
+          black        62%,
+          transparent  100%),
+        linear-gradient(to right,
+          transparent  0%,
+          black        7%,
+          black        93%,
+          transparent  100%);
+      -webkit-mask-composite: source-in;
+      mask-image:
+        linear-gradient(to bottom,
+          transparent  0%,
+          black        9%,
+          black        62%,
+          transparent  100%),
+        linear-gradient(to right,
+          transparent  0%,
+          black        7%,
+          black        93%,
+          transparent  100%);
+      mask-composite: intersect;
+    }
+
+    /* frame name: subtle floating label */
+    #frameLabel {
+      position: absolute;
+      top: 12%; right: 4%;
+      font-family: 'JetBrains Mono', monospace; font-size: 10px;
+      background: rgba(247,247,242,0.8);
+      border: 1.5px solid rgba(17,17,17,0.3);
+      padding: 3px 8px; color: var(--muted);
+      backdrop-filter: blur(4px);
+      pointer-events: none; z-index: 3;
+    }
+
+    /* scroll hint below portrait */
+    .scroll-hint {
+      display: flex; align-items: center; gap: 8px;
+      font-family: 'JetBrains Mono', monospace; font-size: 10px;
+      color: var(--dim); letter-spacing: .08em; text-transform: uppercase;
+      margin-top: -24px;
+    }
+    .scroll-hint svg { opacity: .5; }
+
+    /* ─── CONTROLS ─── */
+    .controls-wrap {
+      max-width: 1320px; margin: 0 auto; padding: 0 56px 80px;
+    }
+    .controls-box {
+      background: var(--card);
+      border: 2px solid rgba(17,17,17,0.15);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      padding: 28px 32px;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .ctrl-top { display: flex; align-items: center; justify-content: space-between; }
+    .ctrl-title {
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+      font-size: 13px; text-transform: uppercase; letter-spacing: .07em;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .ctrl-title::before {
+      content: ''; width: 20px; height: 3px; background: var(--accent);
+      border: 1px solid #111;
+    }
+    .ctrl-desc {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      color: var(--muted); background: rgba(200,255,0,0.2);
+      border: 1.5px solid var(--accent); padding: 4px 12px;
+    }
+
+    /* thumbnails */
+    .thumbs { display: flex; gap: 5px; }
+    .thumb {
+      flex: 1; aspect-ratio: 9/16; overflow: hidden; cursor: pointer;
+      border: 2px solid transparent; transition: border-color .15s, transform .15s;
+      background: #eee; filter: grayscale(30%); opacity: .7;
+    }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; display: block; }
+    .thumb.active {
+      border-color: #111; filter: grayscale(0%); opacity: 1;
+      transform: scaleY(1.04);
+    }
+    .thumb:hover:not(.active) { filter: grayscale(0%); opacity: .9; }
+
+    /* progress */
+    .prog-bar { height: 3px; background: #e0e0e0; position: relative; overflow: hidden; }
+    .prog-fill { position: absolute; left: 0; top: 0; height: 100%; background: var(--text); transition: width .1s linear; }
+    .prog-dot {
+      position: absolute; top: 50%; width: 8px; height: 8px;
+      background: var(--text); border: 2px solid var(--card);
+      border-radius: 50%; transform: translate(-50%, -50%);
+      transition: left .1s linear;
+    }
+
+    /* playback row */
+    .playback { display: flex; align-items: center; gap: 12px; }
+    .btn-play {
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px;
+      padding: 9px 24px; background: var(--text); color: var(--bg);
+      border: 2px solid #111; cursor: pointer; min-width: 108px;
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      transition: background .15s;
+    }
+    .btn-play:hover { background: #2a2a2a; }
+    .btn-reset {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      padding: 9px 14px; background: transparent; color: var(--muted);
+      border: 2px solid #ddd; cursor: pointer; transition: all .15s;
+    }
+    .btn-reset:hover { border-color: #111; color: #111; }
+    .speed-row {
+      margin-left: auto; display: flex; align-items: center; gap: 8px;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--dim);
+    }
+    .speed-row select {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      border: 2px solid #ddd; padding: 5px 8px; background: var(--bg); cursor: pointer;
+    }
+
+    @media (max-width: 960px) {
+      .hero { grid-template-columns: 1fr; padding: 90px 28px 40px; gap: 40px; }
+      .hero-left { text-align: left; }
+      .deco-line { display: none; }
+      .controls-wrap { padding: 0 28px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">ARZ<em>VERSE</em></div>
+  <div class="nav-links">
+    <a href="#">Work</a>
+    <a href="#">Stack</a>
+    <a href="#">Contact</a>
+    <span class="nav-badge">PREVIEW</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+
+  <!-- left -->
+  <div class="hero-left">
+    <div class="deco-line"></div>
+
+    <div class="eyebrow">
+      <span class="eyebrow-dot"></span>
+      <span class="eyebrow-text">Available for projects · 2025</span>
+    </div>
+
+    <h1 class="hero-h1">
+      <span class="line-hey">HEY,</span><br>
+      I'M<br>
+      <span class="line-name">ARIZU</span>
+    </h1>
+
+    <p class="hero-desc">
+      Building <strong>AI Systems</strong>,
+      Automation Workflows,<br>
+      and Intelligent Orchestration
+      infrastructure.
+    </p>
+
+    <div class="ctas">
+      <a href="#" class="cta-main">View Projects →</a>
+      <a href="#" class="cta-ghost">Contact</a>
+    </div>
+
+    <div class="tags">
+      <span class="tag">AI Builder</span>
+      <span class="tag">Automation Engineer</span>
+      <span class="tag">System Designer</span>
+      <span class="tag">Orchestration Architect</span>
+    </div>
+  </div>
+
+  <!-- right: portrait -->
+  <div class="hero-right">
+    <div class="portrait-host">
+      <div class="portrait-glow"></div>
+      <canvas id="heroCanvas"></canvas>
+      <div id="frameLabel">FRAME 02 / 10</div>
+    </div>
+    <div class="scroll-hint">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24">
+        <path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      scroll to animate
+    </div>
+  </div>
+
+</section>
+
+<!-- CONTROLS -->
+<div class="controls-wrap">
+  <div class="controls-box">
+    <div class="ctrl-top">
+      <span class="ctrl-title">Sequence Scrubber</span>
+      <span class="ctrl-desc" id="fDesc">Head down, glasses resting on hair</span>
+    </div>
+    <div class="thumbs" id="thumbsRow"></div>
+    <div class="prog-bar">
+      <div class="prog-fill" id="progFill"></div>
+      <div class="prog-dot"  id="progDot"></div>
+    </div>
+    <div class="playback">
+      <button class="btn-play"  id="playBtn">▶&nbsp; Play</button>
+      <button class="btn-reset" id="resetBtn">⟳ Reset</button>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#999;margin-left:4px">
+        Frame <strong id="fNum" style="color:#111">02</strong> / 10
+      </span>
+      <div class="speed-row">
+        Speed:
+        <select id="spd">
+          <option value="220">0.5×</option>
+          <option value="130" selected>1×</option>
+          <option value="85">1.5×</option>
+          <option value="55">2×</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const FRAMES = ['02','03','04','05','06','07','08','09','10'];
+  const DESCS  = [
+    'Head down, glasses resting on hair',
+    'Glasses beginning to fall',
+    'Mid-fall — two pairs visible (cinematic)',
+    'Glasses approaching the eyes',
+    'Glasses landed — confident smile',
+    'Adjusting sunglasses with hand',
+    'Looking up, confident',
+    'Final pose — professional',
+    'Alternate final — laughing'
+  ];
+
+  const canvas  = document.getElementById('heroCanvas');
+  const ctx     = canvas.getContext('2d');
+  const label   = document.getElementById('frameLabel');
+  const fNum    = document.getElementById('fNum');
+  const fDesc   = document.getElementById('fDesc');
+  const progFill = document.getElementById('progFill');
+  const progDot  = document.getElementById('progDot');
+  const playBtn  = document.getElementById('playBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const spdSel   = document.getElementById('spd');
+  const thumbsRow = document.getElementById('thumbsRow');
+
+  // Set canvas height from first image's natural ratio
+  const probe = new Image();
+  probe.onload = function() {
+    const ratio = probe.naturalHeight / probe.naturalWidth;
+    canvas.style.height = (canvas.offsetWidth * ratio) + 'px';
+    initCanvas();
+    drawFrame(0);
+  };
+  probe.src = './sequence/02.webp';
+
+  window.addEventListener('resize', () => {
+    const ratio = probe.naturalHeight / probe.naturalWidth;
+    canvas.style.height = (canvas.offsetWidth * ratio) + 'px';
+    initCanvas();
+    drawFrame(currentIdx);
+  });
+
+  function initCanvas() {
+    const dpr  = Math.min(window.devicePixelRatio || 1, 2);
+    const w    = canvas.offsetWidth;
+    const h    = canvas.offsetHeight;
+    canvas.width  = w * dpr;
+    canvas.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  // Preload
+  const imgs = FRAMES.map(f => {
+    const i = new Image(); i.src = `./sequence/${f}.webp`; return i;
+  });
+
+  // Thumbs
+  FRAMES.forEach((f, i) => {
+    const d = document.createElement('div');
+    d.className = 'thumb' + (i === 0 ? ' active' : '');
+    const im = document.createElement('img');
+    im.src = `./sequence/${f}.webp`; im.alt = `Frame ${f}`;
+    d.appendChild(im);
+    d.addEventListener('click', () => { stopPlay(); setFrame(i); });
+    thumbsRow.appendChild(d);
+  });
+
+  let currentIdx = 0;
+
+  function drawFrame(idx) {
+    const img = imgs[idx];
+    if (!img.complete || !img.naturalWidth) { img.onload = () => drawFrame(idx); return; }
+
+    const cw = canvas.offsetWidth;
+    const ch = canvas.offsetHeight;
+    ctx.clearRect(0, 0, cw, ch);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+
+    // ZOOM-OUT: contain mode (no crop) + small padding factor
+    const PAD   = 0.88;  // ← zoom-out here (1.0 = tight fit, lower = more space)
+    const iw    = img.naturalWidth, ih = img.naturalHeight;
+    const scale = Math.min(cw / iw, ch / ih) * PAD;
+    const dw    = iw * scale, dh = ih * scale;
+    // slightly shift upward so face is more visible
+    const dx    = (cw - dw) / 2;
+    const dy    = (ch - dh) / 2 - ch * 0.03;
+
+    ctx.drawImage(img, dx, dy, dw, dh);
+  }
+
+  function setFrame(idx) {
+    currentIdx = idx;
+    drawFrame(idx);
+    label.textContent = `FRAME ${FRAMES[idx]} / 10`;
+    fNum.textContent  = FRAMES[idx];
+    fDesc.textContent = DESCS[idx];
+    const pct = idx / (FRAMES.length - 1) * 100;
+    progFill.style.width = pct + '%';
+    progDot.style.left   = pct + '%';
+    document.querySelectorAll('.thumb').forEach((t, i) => t.classList.toggle('active', i === idx));
+  }
+
+  let playing = false, timer = null;
+  function stopPlay() {
+    clearInterval(timer); playing = false;
+    playBtn.innerHTML = '▶&nbsp; Play';
+  }
+  function startPlay() {
+    playing = true; playBtn.innerHTML = '⏸&nbsp; Pause';
+    timer = setInterval(() => {
+      const next = currentIdx + 1;
+      if (next >= FRAMES.length) { stopPlay(); return; }
+      setFrame(next);
+    }, +spdSel.value);
+  }
+
+  playBtn.addEventListener('click', () => {
+    if (playing) stopPlay();
+    else { if (currentIdx >= FRAMES.length - 1) setFrame(0); startPlay(); }
+  });
+  resetBtn.addEventListener('click', () => { stopPlay(); setFrame(0); });
+  spdSel.addEventListener('change',  () => { if (playing) { stopPlay(); startPlay(); } });
+
+  if (imgs[0].complete) setFrame(0);
+  imgs[0].onload = () => setFrame(0);
+  setTimeout(startPlay, 1000);
+</script>
+</body>
+</html>

@@ -228,3 +228,61 @@ a {
     scroll-behavior: auto !important;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────
+   HERO SEQUENCE — CANVAS VISUAL TREATMENT
+   Matches hero-preview.html: gradient mask fades edges to background,
+   paired with the lime ambient glow behind the canvas.
+   ──────────────────────────────────────────────────────────────────── */
+
+.hero-canvas-mask {
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0%, black 4%, black 88%, transparent 100%),
+    linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, transparent 0%, black 4%, black 88%, transparent 100%),
+    linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  mask-composite: intersect;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   DIRECTION C — TERMINAL / CLI ELEMENTS
+   Blinking cursor for the hero eyebrow prompt line.
+   ──────────────────────────────────────────────────────────────────── */
+
+.terminal-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  background: #C8FF00;
+  border: 1.5px solid #111111;
+  vertical-align: middle;
+  animation: cursor-blink 1s step-end infinite;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   DIRECTION C — TERMINAL TICKER
+   Scrolling horizontal status marquee at the bottom of the hero section.
+   ──────────────────────────────────────────────────────────────────── */
+
+.terminal-ticker-track {
+  display: inline-block;
+  white-space: nowrap;
+  font-family: var(--font-code);
+  font-size: 10px;
+  color: #C8FF00;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  animation: ticker-scroll 45s linear infinite;
+}
+
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
